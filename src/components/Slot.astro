@@ -1,0 +1,56 @@
+---
+/**
+ * Replaces the prototype's <image-slot id="…">.
+ *
+ * Drop a file named `<id>.jpg` (or .jpeg/.png/.webp/.avif) into `src/assets/images/`
+ * and it is picked up, resized and converted to WebP at build time.
+ * Until then nothing is rendered and the parent frame keeps its size and placeholder colour.
+ * The parent must be `position: relative` (or absolutely positioned) with a defined size.
+ */
+import { Image } from 'astro:assets';
+import { slotImage } from '../data/slots';
+
+interface Props {
+  id: string;
+  alt?: string;
+  /** CSS `object-position`. */
+  position?: string;
+  fit?: 'cover' | 'contain';
+  /** Rendered width hint, e.g. "(min-width: 900px) 190px, 40vw". */
+  sizes?: string;
+  widths?: number[];
+  eager?: boolean;
+}
+
+const {
+  id,
+  alt = '',
+  position = 'center',
+  fit = 'cover',
+  sizes = '100vw',
+  widths = [480, 960],
+  eager = false,
+} = Astro.props;
+
+const src = slotImage(id);
+const usable = src ? [...new Set(widths.filter((w) => w < src.width).concat(src.width))] : [];
+---
+
+{
+  src ? (
+    <Image
+      src={src}
+      alt={alt}
+      widths={usable}
+      sizes={sizes}
+      format="webp"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      class="slot-img"
+      style={`object-fit:${fit};object-position:${position}`}
+      data-slot={id}
+    />
+  ) : (
+    <Fragment set:html={`<!-- image slot "${id}": add src/assets/images/${id}.jpg -->`} />
+  )
+}

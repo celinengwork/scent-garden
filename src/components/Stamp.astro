@@ -1,0 +1,27 @@
+---
+/** Perforated postage stamp. `sm` = Cavaillès / Interviews size, `lg` = Website / Kit / Media / Social size. */
+import Slot from './Slot.astro';
+
+interface Props {
+  size: 'sm' | 'lg';
+  color: string;
+  number: string;
+  label: string;
+  slot: string;
+  /** Second stamp in the pair: rotated the other way and tucked under the first. */
+  second?: boolean;
+  position?: string;
+}
+
+const { size, color, number, label, slot, second = false, position } = Astro.props;
+---
+
+<div class:list={['sg-stamp', `sg-stamp--${size}`, second && 'is-second']}>
+  <div class="sg-edge sg-edge-sm sg-stamp__paper">
+    <div class="sg-stamp__face" style={`background:${color}`}>
+      <span class="sg-stamp__num">{number}</span>
+      <div class="sg-stamp__img"><Slot id={slot} position={position} sizes="80px" widths={[160]} /></div>
+      <span class="sg-stamp__label">{label}</span>
+    </div>
+  </div>
+</div>

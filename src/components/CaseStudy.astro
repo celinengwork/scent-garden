@@ -1,0 +1,32 @@
+---
+/** Shell for the six case-study sections: background slot, gradient scrim, header. Body goes in the default slot. */
+import SectionBg from './SectionBg.astro';
+
+interface Props {
+  id: string;
+  /** "serif" = Cavaillès / Interviews header (sentence case, weight 500); "caps" = the other four. */
+  header: 'serif' | 'caps';
+  eyebrow: string;
+  /** May contain <br>. */
+  title: string;
+  subtitle: string;
+  scrim: string;
+  /** Fade the header in on scroll (Interview Series). */
+  reveal?: boolean;
+  class?: string;
+}
+
+const { id, header, eyebrow, title, subtitle, scrim, reveal = false, class: className } = Astro.props;
+const r = reveal ? { 'data-reveal': 'fade' } : {};
+---
+
+<section id={id} class:list={['sg-case', `sg-case--${header}`, className]}>
+  <SectionBg slot={`${id}-bg`} />
+  <div class="sg-bg" style={`background:${scrim}`}></div>
+  <div class="sg-case__inner">
+    <div class="sg-eyebrow" {...r}>{eyebrow}</div>
+    <h2 class="sg-case__title" {...r} set:html={title} />
+    <p class="sg-case__subtitle" {...r}>{subtitle}</p>
+    <slot />
+  </div>
+</section>

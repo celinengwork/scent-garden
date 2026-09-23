@@ -1,0 +1,510 @@
+---
+import { getImage } from 'astro:assets';
+import '../styles/global.css';
+
+import SectionBg from '../components/SectionBg.astro';
+import Slot from '../components/Slot.astro';
+import BloomedCompany from '../components/BloomedCompany.astro';
+import CaseStudy from '../components/CaseStudy.astro';
+import Postcard from '../components/Postcard.astro';
+import DriftColumn from '../components/DriftColumn.astro';
+import { slotImage } from '../data/slots';
+import { links, external, mailto } from '../data/links';
+
+import bgMeadow from '../assets/backgrounds/bg-meadow-pastel.png';
+import bgAiryBreeze from '../assets/backgrounds/bg-05-airy-breeze.jpg';
+import bgGardenHorizon from '../assets/backgrounds/bg-01-garden-horizon.jpg';
+
+const title = 'Kelsie Nguyễn — Scent Garden · Brand & Marketing Portfolio';
+const description =
+  'A flower is seen. A scent is remembered. Portfolio of Kelsie Nguyễn — brand management, e-commerce, communications and events for Cavaillès (Sagen Group) and Vietnam Exposition Center (Vingroup).';
+const ogImage = await getImage({ src: bgMeadow, width: 1200, format: 'jpg' });
+const ogUrl = Astro.site ? new URL(ogImage.src, Astro.site).href : ogImage.src;
+
+const blooms = [
+  { slot: 'blooms-carousel-cav', title: 'Cavaillès', href: '#bloom-cavailles',
+    text: 'From understanding the product to making it perform — brand, e-commerce and commercial execution for a French personal care brand.' },
+  { slot: 'blooms-carousel-int', title: 'C-Level Interview Series', href: '#bloom-vec-interviews',
+    text: 'Producing an executive interview series end-to-end, from questions to publish, across YouTube, Facebook and LinkedIn.' },
+  { slot: 'blooms-carousel-web', title: 'VEC Website / Landing Page', href: '#bloom-vec-website',
+    text: "Shaping the sitemap and content for VEC's website, from research through to launch." },
+  { slot: 'blooms-carousel-kit', title: 'VEC Sales Kit', href: '#bloom-vec-sales-kit',
+    text: 'Turning complex event concepts into commercial proposals stakeholders could act on.' },
+  { slot: 'blooms-carousel-ven', title: 'Media Vendor Management', href: '#bloom-vec-media',
+    text: 'Orchestrating photo, video and event documentation into one consistent, publish-ready media kit.' },
+  { slot: 'blooms-carousel-social', title: 'VEC Daily Social Management', href: '#bloom-vec-daily-social',
+    text: "Keeping VEC's day-to-day social presence consistent and on-brand across channels." },
+];
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const photos = (prefix: string, n: number, sub: string) =>
+  Array.from({ length: n }, (_, i) => ({ slot: `${prefix}-${i + 1}`, title: `Photo ${pad(i + 1)}`, sub }));
+
+const guests = links.interviewGuests.map((url, i) => ({
+  slot: `int-still-${i + 1}`,
+  title: `Guest ${pad(i + 1)}`,
+  sub: '[Title · Company]',
+  watch: url,
+}));
+
+const sage = '#A9B9A5';
+const marigold = '#C7A96B';
+---
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#F7F4EC" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
+  </head>
+  <body>
+    <!-- ───────────── Hero ───────────── -->
+    <section id="top" class="sg-hero">
+      <SectionBg image={bgMeadow} eager />
+      <div class="sg-bg sg-hero__wash"></div>
+
+      <nav class="sg-nav" aria-label="Main">
+        <a href="#top" class="sg-nav__brand">Kelsie Nguyễn</a>
+        <div class="sg-nav-links">
+          <a href="#top" class="sg-navlink is-current">Home</a>
+          <a href="#gardener" class="sg-navlink">The Gardener</a>
+          <a href="#bloomed" class="sg-navlink">What Has Bloomed</a>
+          <a href="#blooms" class="sg-navlink">The Blooms</a>
+          <a href="#wildflowers" class="sg-navlink">Wildflowers</a>
+          <a href="#visit" class="sg-pill sg-nav__cta">Come Visit My Garden</a>
+        </div>
+        <button class="sg-nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sg-menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div id="sg-menu" class="sg-menu" hidden>
+          <a href="#top" class="sg-navlink is-current">Home</a>
+          <a href="#gardener" class="sg-navlink">The Gardener</a>
+          <a href="#bloomed" class="sg-navlink">What Has Bloomed</a>
+          <a href="#blooms" class="sg-navlink">The Blooms</a>
+          <a href="#wildflowers" class="sg-navlink">Wildflowers</a>
+          <a href="#visit" class="sg-pill sg-nav__cta">Come Visit My Garden</a>
+        </div>
+      </nav>
+
+      <div class="sg-hero__content">
+        <div class="sg-hero__kicker">
+          <div class="sg-hero__dots" aria-hidden="true">
+            <span style="background:#EFD35C"></span><span style="background:#E8A6A8"></span><span
+              style="background:#9CC9DE"></span><span style="background:#A9B9A5"></span>
+          </div>
+          <span class="sg-hero__label">Scent Garden</span>
+        </div>
+
+        <div class="sg-glass sg-hero__card">
+          <h1 class="sg-hero__title">
+            <span>A flower is seen.</span>
+            <span class="is-italic">A scent is remembered.</span>
+          </h1>
+          <p class="sg-hero__lede">
+            That's what draws me to brands — what makes them not only noticed, but remembered. I connect business, brand,
+            consumers and execution to turn ideas into things that work in the real world.
+          </p>
+        </div>
+
+        <div class="sg-hero__actions">
+          <a href="#gardener" class="sg-hero__btn">Explore the Garden ↓</a>
+          <span class="sg-hero__meta">Portfolio · Kelsie Nguyễn</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── The Gardener ───────────── -->
+    <section id="gardener" class="sg-gardener">
+      <SectionBg slot="gardener-bg" />
+      <div class="sg-bg sg-gardener__scrim"></div>
+
+      <div class="sg-gardener-grid">
+        <div class="sg-gardener__portrait-wrap" data-reveal="bloom">
+          <div class="sg-gardener__portrait">
+            <Slot id="gardener-portrait" alt="Portrait of Kelsie Nguyễn" sizes="(min-width: 900px) 380px, 90vw" widths={[380, 760]} />
+            <div class="sg-gardener__portrait-shade"></div>
+            <div class="sg-gardener__caption">
+              <span class="sg-gardener__cap1" data-reveal="rise-sm" style="--d:180ms">The Gardener</span>
+              <span class="sg-gardener__cap2" data-reveal="rise-sm" style="--d:300ms">Kelsie Nguyễn</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-gardener__text">
+          <h2 class="sg-h2" data-reveal="slide" style="--d:0ms">The Gardener</h2>
+          <p class="sg-italic-sub" data-reveal="slide" style="--d:100ms">Every garden grows differently. So did I.</p>
+          <p class="sg-gardener__p" data-reveal="slide" style="--d:0ms">I like my garden with structure — thoughtfully planted, intentionally arranged, and always with a reason behind it.</p>
+          <p class="sg-gardener__p" data-reveal="slide" style="--d:120ms">That is how I approach my work: I like bringing different pieces together — connecting business, brand, consumers and execution to make an idea work in the real world.</p>
+          <p class="sg-gardener__p" data-reveal="slide" style="--d:240ms">But a good garden should never be too perfect.</p>
+          <p class="sg-gardener__p" data-reveal="slide" style="--d:360ms">I leave room for wildflowers — unexpected ideas, creative sparks and things worth exploring simply because they make me curious. And when the weather changes, I adapt, learn and keep growing.</p>
+          <p class="sg-gardener__p" data-reveal="slide" style="--d:480ms">Perhaps that is the kind of marketer I am: strategic enough to know where I'm going, curious enough to let something unexpected grow along the way.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── What Has Bloomed ───────────── -->
+    <BloomedCompany
+      id="bloomed"
+      bgSlot="bloomed-bg"
+      background={bgAiryBreeze}
+      eyebrow="Sagen Group"
+      heading="What Has Bloomed"
+      tagline="The experiences that shaped my perspective."
+      company="Cavaillès"
+      role="Assistant Brand Manager"
+      description="Worked across brand management, e-commerce and commercial execution for a French personal care brand — from product positioning and campaign planning to campaign execution."
+      stats={[
+        { value: '4×', label: 'H2/2024 E-commerce Growth' },
+        { value: 'VND 5B', label: 'Monthly Revenue' },
+        { value: '#1', label: "Women's Personal Care on TikTok Shop" },
+        { value: '15K', label: 'TikTok Followers in 3 Months' },
+      ]}
+      photoPrefix="bloom-photo"
+    />
+
+    <BloomedCompany
+      id="bloomed-vec"
+      bgSlot="vec-bg"
+      backgroundColor="#BCC9B9"
+      eyebrow="Vingroup"
+      company="Vietnam Exposition Center"
+      role="Marketing Executive"
+      description="Worked across brand communications, events and project management, bringing together internal teams, vendors and partners from planning through execution."
+      stats={[
+        { value: '5+', label: 'National-scale Exhibitions' },
+        { value: 'VND 400M', label: 'Communication Budget' },
+        { value: '5+', label: 'Stakeholder Groups Managed' },
+        { value: '40+', label: 'Contracts Managed' },
+      ]}
+      photoPrefix="vec-photo"
+    />
+
+    <!-- ───────────── The Blooms (carousel) ───────────── -->
+    <section id="blooms" class="sg-blooms">
+      <SectionBg slot="blooms-bg" />
+      <div class="sg-bg sg-blooms__scrim"></div>
+      <div class="sg-blooms__inner">
+        <h2 class="sg-h2 sg-blooms__title">The Blooms</h2>
+        <p class="sg-italic-sub sg-blooms__sub">A closer look at the work behind them.</p>
+
+        <div class="sg-carousel" data-carousel>
+          <div class="sg-track" data-carousel-track tabindex="0" aria-label="The Blooms — projects">
+            {
+              blooms.map((b, i) => (
+                <article class="sg-slide" data-reveal="rise" style={`--d:${i * 90}ms`}>
+                  <div class:list={['sg-slide__img', !slotImage(b.slot) && 'is-empty']}>
+                    <Slot id={b.slot} alt={b.title} sizes="(min-width: 768px) 320px, 78vw" widths={[640]} />
+                  </div>
+                  <h3 class="sg-slide__title">{b.title}</h3>
+                  <p class="sg-slide__text">{b.text}</p>
+                  <a href={b.href} class="sg-slide__link">See more →</a>
+                </article>
+              ))
+            }
+          </div>
+          <div class="sg-carousel__controls">
+            <span class="sg-carousel__counter" data-carousel-counter aria-live="polite">01 / 06</span>
+            <div class="sg-carousel__bar"><div class="sg-carousel__fill" data-carousel-fill></div></div>
+            <div class="sg-carousel__arrows">
+              <button type="button" class="sg-arrow" data-carousel-prev aria-label="Previous project">←</button>
+              <button type="button" class="sg-arrow" data-carousel-next aria-label="Next project">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── Case study: Cavaillès ───────────── -->
+    <CaseStudy
+      id="bloom-cavailles"
+      header="serif"
+      class="is-cavailles"
+      eyebrow="Sagen Group · Cavaillès"
+      title="Cavaillès — Brand &amp; Commercial Execution"
+      subtitle="Turning product value into content that performs."
+      scrim="linear-gradient(160deg, #F7F4EC 0%, #9BCD9D52)"
+    >
+      <div class="sg-case-grid">
+        <div class="sg-case-grid__left">
+          <Postcard
+            variant="compact"
+            listMinHeight={190}
+            postmark={['CAV', '2024']}
+            bullets={[
+              'Translated product advantages into positioning, messaging and commercial materials for the Vietnamese market.',
+              'Developed content direction based on product value propositions and consumer needs, then translated it into an execution plan across social and e-commerce touchpoints.',
+              'Executed the content plan through platform-native formats and campaign activities, contributing to +7K followers in 4 months.',
+            ]}
+            stamps={[
+              { color: '#315B4F', number: '04', label: 'Larkspur', slot: 'cav-stamp-1' },
+              { color: '#C98A8A', number: '18', label: 'Rose', slot: 'cav-stamp-2' },
+            ]}
+          />
+          <div class="sg-case-stats">
+            <div class="sg-case-stats__grid">
+              <div>
+                <div class="sg-count"><span data-count="15" data-suffix="K">15K</span></div>
+                <div class="sg-count__label">Followers (TikTok)</div>
+              </div>
+              <div>
+                <div class="sg-count"><span data-count="3.2" data-suffix="%">3.2%</span></div>
+                <div class="sg-count__label">Product CTR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <DriftColumn class="sg-case-grid__drift" items={photos('cav-photo', 5, '[Campaign · Format]')} />
+      </div>
+    </CaseStudy>
+
+    <!-- ───────────── Case study: C-Level Interview Series ───────────── -->
+    <CaseStudy
+      id="bloom-vec-interviews"
+      header="serif"
+      class="is-interviews"
+      reveal
+      eyebrow="C-Level Interview Series"
+      title="Vietnam Exhibition Event &amp; Advertising<br>Industry Connect Summit 2026"
+      subtitle="From questions to publish — the full content production, orchestrated."
+      scrim="linear-gradient(180deg,#F5F3E7 0%,#EDF1EA 100%)"
+    >
+      <div class="sg-case-grid">
+        <div class="sg-case-grid__left">
+          <Postcard
+            variant="compact"
+            listMinHeight={232}
+            revealDelays={[150, 260, 370]}
+            postmark={['VEC', '2026']}
+            bullets={[
+              'Led the end-to-end interview process, from question and concept development to production and publication.',
+              'Coordinated vendors, MCs and guests, overseeing production quality and final outputs.',
+              'Managed Vietnamese–English subtitling and cross-platform publishing across YouTube, Facebook &amp; LinkedIn.',
+            ]}
+            stamps={[
+              { color: '#315B4F', number: '12', label: 'Larkspur', slot: 'int-stamp-1', position: '50% 11%' },
+              { color: '#C98A8A', number: '26', label: 'Rose', slot: 'int-stamp-2' },
+            ]}
+          />
+          <div class="sg-case-stats">
+            <div class="sg-case-stats__grid">
+              <div data-reveal="fade" style="--d:0ms">
+                <div class="sg-count"><span data-count="12">12</span></div>
+                <div class="sg-count__label">C-Level Guests Featured</div>
+              </div>
+              <div data-reveal="fade" style="--d:60ms">
+                <div class="sg-count"><span data-count="2" data-prefix="~" data-suffix="M">~2M</span></div>
+                <div class="sg-count__label">Total Views</div>
+              </div>
+              <div data-reveal="fade" style="--d:120ms">
+                <div class="sg-count"><span data-count="3">3</span></div>
+                <div class="sg-count__label">Channels Published</div>
+              </div>
+              <div data-reveal="fade" style="--d:180ms">
+                <div class="sg-count"><span data-count="2">2</span></div>
+                <div class="sg-count__label">Subtitle Languages</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <DriftColumn class="sg-case-grid__drift" tall items={guests} />
+      </div>
+    </CaseStudy>
+
+    <!-- ───────────── Case study: VEC Website ───────────── -->
+    <CaseStudy
+      id="bloom-vec-website"
+      header="caps"
+      eyebrow="Digital · Website · Brand Experience"
+      title="VEC Website / Landing Page"
+      subtitle="From research to launch — shaping the digital experience from the ground up."
+      scrim="linear-gradient(180deg,#F0F1E7 0%,#E8EEF0 100%)"
+    >
+      <div class="sg-bloom-body wide">
+        <Postcard
+          variant="wide"
+          postmark={['VEC', 'WEB']}
+          bullets={[
+            'Benchmarked global exhibition &amp; venue digital experiences and shaped the website sitemap and content structure.',
+            'Coordinated with PM, designers and developers across design, development and content implementation.',
+            'Conducted UAT, reviewed functionality and content, and supported final deployment and post-launch updates.',
+          ]}
+          stamps={[
+            { color: sage, number: '08', label: 'Sage', slot: 'web-stamp-1' },
+            { color: marigold, number: '24', label: 'Marigold', slot: 'web-stamp-2' },
+          ]}
+        >
+          <div class="sg-case-links">
+            <a class="sg-cta-link is-small" {...external(links.vecWebsite)}><span class="lbl">Visit the website</span><span class="arr">→</span></a>
+            <a class="sg-cta-link is-small" {...external(links.vecLandingPage)}><span class="lbl">Visit landing page</span><span class="arr">→</span></a>
+          </div>
+        </Postcard>
+        <div class="sg-photo-grid">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <figure><div class="sg-photo-grid__img"><Slot id={`web-photo-${n}`} alt={`VEC website — screen ${n}`} sizes="(min-width: 1024px) 260px, 45vw" widths={[520]} /></div></figure>
+          ))}
+        </div>
+      </div>
+    </CaseStudy>
+
+    <!-- ───────────── Case study: VEC Sales Kit ───────────── -->
+    <CaseStudy
+      id="bloom-vec-sales-kit"
+      header="caps"
+      eyebrow="Commercial · Sales Kit · Presentation"
+      title="VEC Sales Kit"
+      subtitle="Turning complex project ideas into a persuasive commercial story."
+      scrim="linear-gradient(180deg,#F7F4EC 0%,#F8F0DC 100%)"
+    >
+      <div class="sg-bloom-body wide">
+        <Postcard
+          variant="wide"
+          postmark={['VEC', 'KIT']}
+          bullets={[
+            'Structured complex information into clear value propositions.',
+            'Shaped proposal narratives to connect project ideas with commercial value.',
+            'Aligned stakeholders to turn concepts into persuasive commercial presentations.',
+          ]}
+          stamps={[
+            { color: sage, number: '08', label: 'Sage', slot: 'kit-stamp-1' },
+            { color: marigold, number: '24', label: 'Marigold', slot: 'kit-stamp-2' },
+          ]}
+        />
+        <div class="sg-photo-grid">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <figure><div class="sg-photo-grid__img"><Slot id={`kit-photo-${n}`} alt={`VEC sales kit — page ${n}`} sizes="(min-width: 1024px) 260px, 45vw" widths={[520]} /></div></figure>
+          ))}
+        </div>
+      </div>
+    </CaseStudy>
+
+    <!-- ───────────── Case study: Media Vendor Management ───────────── -->
+    <CaseStudy
+      id="bloom-vec-media"
+      header="caps"
+      eyebrow="Operations · Media Vendors · Documentation"
+      title="Media Vendor Management"
+      subtitle="Coordinating vendors to keep every event fully documented."
+      scrim="linear-gradient(180deg,#F7F4EC 0%,#E9F0F1 100%)"
+    >
+      <div class="sg-bloom-body wide">
+        <Postcard
+          variant="wide"
+          postmark={['VEC', 'MEDIA']}
+          bullets={[
+            'Managed media vendors end-to-end, from briefing and production coordination to on-site photoshoot supervision and quality control.',
+            'Orchestrated photo, video &amp; event documentation across multiple vendors, ensuring outputs met brand and publishing requirements.',
+            'Curated and quality-controlled media assets for brand consistency, consolidating final outputs into a cohesive post-event media kit for public release.',
+          ]}
+          stamps={[
+            { color: sage, number: '08', label: 'Sage', slot: 'media-stamp-1' },
+            { color: marigold, number: '24', label: 'Marigold', slot: 'media-stamp-2' },
+          ]}
+        />
+        <DriftColumn class="sg-drift-wrap--side" items={photos('vendor-photo', 5, '[Vendor · Event]')} />
+      </div>
+    </CaseStudy>
+
+    <!-- ───────────── Case study: Daily Social ───────────── -->
+    <CaseStudy
+      id="bloom-vec-daily-social"
+      header="caps"
+      eyebrow="Social Media · Content · Vendor Management"
+      title="Daily Social Management"
+      subtitle="Keeping always-on channels consistent, on-brand and on schedule."
+      scrim="linear-gradient(180deg,#F7F4EC 0%,#FBF6D9 100%)"
+    >
+      <div class="sg-bloom-body wide">
+        <Postcard
+          variant="wide"
+          postmark={['DAILY', 'SOCIAL']}
+          bullets={[
+            'Managed always-on social content from planning and creative direction to publishing.',
+            'Led vendor coordination, including scope, budget negotiation and production delivery.',
+            'Controlled content quality, consistency and spending across weekly outputs.',
+          ]}
+          stamps={[
+            { color: sage, number: '03', label: 'Sage', slot: 'social-stamp-1' },
+            { color: marigold, number: '30', label: 'Marigold', slot: 'social-stamp-2' },
+          ]}
+        >
+          <div class="sg-social-stats">
+            <div>
+              <div class="sg-social-stats__value">2</div>
+              <div class="sg-social-stats__label">Key Stakeholders</div>
+            </div>
+            <div>
+              <div class="sg-social-stats__value">150M+</div>
+              <div class="sg-social-stats__label is-vnd"><span class="sg-social-stats__cur">VND</span><span>Monthly Social Investment</span></div>
+            </div>
+            <div>
+              <div class="sg-social-stats__value">40+</div>
+              <div class="sg-social-stats__label">Monthly Content Outputs</div>
+            </div>
+          </div>
+        </Postcard>
+        <DriftColumn class="sg-drift-wrap--side" items={photos('social-photo', 5, '[Channel · Campaign]')} />
+      </div>
+    </CaseStudy>
+
+    <!-- ───────────── Wildflowers ───────────── -->
+    <section id="wildflowers" class="sg-wildflowers">
+      <SectionBg image={bgGardenHorizon} />
+      <div class="sg-bg sg-wildflowers__scrim"></div>
+      <div class="sg-wildflowers__inner">
+        <h2 class="sg-h2 sg-wildflowers__title">Wildflowers</h2>
+        <p class="sg-italic-sub">Kelsie Beauty Clues — a place to follow my curiosity, decoding the stories, strategies and cultural cues behind beauty.</p>
+        <div class="sg-wild-grid">
+          {
+            Array.from({ length: 12 }, (_, i) => (
+              <div class="sg-wild">
+                <Slot id={`wild-${i + 1}`} alt={`Kelsie Beauty Clues — post ${i + 1}`} sizes="(min-width: 768px) 25vw, 50vw" widths={[400, 640]} />
+                <div class="sg-wild-ov" />
+              </div>
+            ))
+          }
+        </div>
+        <div class="sg-wildflowers__more">
+          <a class="sg-pill" {...external(links.wildflowersMore)}>See more</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── Come Visit My Garden ───────────── -->
+    <section id="visit" class="sg-visit">
+      <SectionBg slot="visit-bg" />
+      <div class="sg-bg sg-visit__scrim"></div>
+      <div class="sg-visit__pulse-wrap" aria-hidden="true"><div class="sg-pulse"></div></div>
+      <div class="sg-visit__ghost" aria-hidden="true">
+        <div class="sg-float"><Slot id="visit-ghost-flower" fit="contain" sizes="900px" widths={[900]} /></div>
+      </div>
+      <div class="sg-visit__content">
+        <h2 class="sg-visit__title">Come Visit <br />My Garden</h2>
+        <p class="sg-visit__text">Whether it's a brand to grow or an idea worth exploring,<br />&nbsp;I'd love to hear about it.</p>
+        <div class="sg-visit__links">
+          <a class="sg-cta-link" {...external(links.linkedin)}><span class="lbl">LinkedIn</span><span class="arr">→</span></a>
+          <a class="sg-cta-link" {...external(links.instagram)}><span class="lbl">Instagram</span><span class="arr">→</span></a>
+          <a class="sg-cta-link" {...mailto(links.email)}><span class="lbl">Email</span><span class="arr">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <script src="../scripts/main.ts"></script>
+  </body>
+</html>

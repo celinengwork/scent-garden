@@ -1,0 +1,62 @@
+---
+/** One "What Has Bloomed" career block: text + glass stat panel on the left, photo fan on the right. */
+import type { ImageMetadata } from 'astro';
+import SectionBg from './SectionBg.astro';
+import BloomStack from './BloomStack.astro';
+
+interface Props {
+  id: string;
+  background?: ImageMetadata;
+  /** Solid colour layer used instead of an image. */
+  backgroundColor?: string;
+  bgSlot: string;
+  eyebrow: string;
+  heading?: string;
+  tagline?: string;
+  company: string;
+  role: string;
+  description: string;
+  stats: { value: string; label: string }[];
+  photoPrefix: string;
+}
+
+const p = Astro.props;
+---
+
+<section id={p.id} class="sg-bloomed">
+  <SectionBg slot={p.bgSlot} />
+  {p.background && <SectionBg image={p.background} />}
+  {p.backgroundColor && <div class="sg-bg" style={`background-color:${p.backgroundColor}`} />}
+
+  <div class="sg-bloomed__inner">
+    <div class="sg-bloom-cols">
+      <div class="sg-bloom-text">
+        <div class="sg-eyebrow">{p.eyebrow}</div>
+        {p.heading && <h2 class="sg-bloomed__heading">{p.heading}</h2>}
+        {p.tagline && <p class="sg-bloomed__tagline">{p.tagline}</p>}
+        {p.heading ? (
+          <h3 class="sg-bloomed__company">{p.company}</h3>
+        ) : (
+          <h2 class="sg-bloomed__company">{p.company}</h2>
+        )}
+        <div class="sg-bloomed__role">{p.role}</div>
+        <p class="sg-bloomed__desc">{p.description}</p>
+
+        <div class="sg-glass sg-bloomed__stats">
+          <div class="sg-stat-grid">
+            {
+              p.stats.map((s) => (
+                <div>
+                  <div class="sg-bloomed__stat-value">{s.value}</div>
+                  <div class="sg-bloomed__stat-label">{s.label}</div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <BloomStack prefix={p.photoPrefix} alt={p.company} />
+    </div>
+  </div>
+</section>

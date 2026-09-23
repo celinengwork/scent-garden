@@ -1,0 +1,69 @@
+---
+/**
+ * "My Role" postcard with its two stamps.
+ * - compact: Cavaillès / Interview Series (smaller card + stamps, single-ring postmark)
+ * - wide:    Website / Sales Kit / Media / Daily Social (larger padding, double-ring postmark)
+ * Anything passed as children renders under the card (links, stats) inside the same column.
+ */
+import Stamp from './Stamp.astro';
+
+interface StampData {
+  color: string;
+  number: string;
+  label: string;
+  slot: string;
+  position?: string;
+}
+
+interface Props {
+  variant: 'compact' | 'wide';
+  bullets: string[];
+  postmark: [string, string];
+  stamps: [StampData, StampData];
+  /** min-height of the bullet list (compact variant). */
+  listMinHeight?: number;
+  /** Reveal each bullet with these delays (ms). */
+  revealDelays?: number[];
+}
+
+const { variant, bullets, postmark, stamps, listMinHeight, revealDelays } = Astro.props;
+const size = variant === 'compact' ? 'sm' : 'lg';
+---
+
+<div class:list={['sg-postcard', `sg-postcard--${variant}`]}>
+  <div class="sg-postcard__tilt">
+    <div class="sg-paper sg-edge sg-postcard__card">
+      <div class="sg-postcard__inner-border"></div>
+      <h3 class="sg-postcard__title">My Role</h3>
+      <div class="sg-postcard__rule"></div>
+      <ul class="sg-postcard__list" style={listMinHeight ? `min-height:${listMinHeight}px` : undefined}>
+        {
+          bullets.map((text, i) => (
+            <li
+              class="sg-bullet"
+              data-reveal={revealDelays ? 'fade' : undefined}
+              style={revealDelays ? `--d:${revealDelays[i]}ms` : undefined}
+            >
+              <span class="sg-bullet__dot" />
+              <span class="sg-bullet__text" set:html={text} />
+            </li>
+          ))
+        }
+      </ul>
+      <div class="sg-postmark" aria-hidden="true">
+        {
+          variant === 'compact' ? (
+            <span>{postmark[0]}<br />{postmark[1]}</span>
+          ) : (
+            <div class="sg-postmark__ring">{postmark[0]}<br />{postmark[1]}</div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+  <div class="sg-stamps" aria-hidden="true">
+    <Stamp size={size} {...stamps[0]} />
+    <Stamp size={size} second {...stamps[1]} />
+  </div>
+  <slot />
+</div>

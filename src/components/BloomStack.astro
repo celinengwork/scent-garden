@@ -1,0 +1,23 @@
+---
+/** Stacked 4-photo fan used in "What Has Bloomed". Hovered card lifts to the top. */
+import Slot from './Slot.astro';
+import { slotImage } from '../data/slots';
+
+interface Props {
+  prefix: string; // "bloom-photo" | "vec-photo"
+  alt: string;
+}
+
+const { prefix, alt } = Astro.props;
+const ids = [1, 2, 3, 4].map((n) => `${prefix}-${n}`);
+---
+
+<div class="sg-bloom-stack">
+  {
+    ids.map((id, i) => (
+      <div class:list={['sg-bloom-card', `sg-bloom-card--${i + 1}`, !slotImage(id) && 'is-empty']}>
+        <Slot id={id} alt={`${alt} — photo ${i + 1}`} sizes="(min-width: 900px) 180px, 60vw" widths={[360, 540]} />
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,48 @@
+---
+/**
+ * Vertical "drift" carousel: a masked column of photo cards that slowly scrolls
+ * up and down (35s, alternate) and pauses on hover. Height/offset are computed in main.ts.
+ */
+import Slot from './Slot.astro';
+import { external } from '../data/links';
+
+interface Item {
+  slot: string;
+  title: string;
+  sub: string;
+  /** Show a "Watch →" link (Interview Series). Empty string = placeholder. */
+  watch?: string;
+}
+
+interface Props {
+  items: Item[];
+  /** Height variant: default clamp(420px,50vw,560px); tall clamp(520px,62vw,760px). */
+  tall?: boolean;
+  class?: string;
+}
+
+const { items, tall = false, class: className } = Astro.props;
+---
+
+<div class:list={['sg-fade-y', 'sg-drift-wrap', tall && 'is-tall', className]}>
+  <div class="sg-drift" data-drift>
+    {
+      items.map((item, i) => (
+        <div class:list={['sg-drift-card', i % 2 === 0 ? 'is-left' : 'is-right']}>
+          <div class="sg-drift-card__img">
+            <Slot id={item.slot} alt={item.title} sizes="190px" widths={[380]} />
+          </div>
+          <div class="sg-drift-card__text">
+            <span class="sg-drift-card__title">{item.title}</span>
+            <span class="sg-drift-card__sub">{item.sub}</span>
+            {item.watch !== undefined && (
+              <a class="sg-watch" {...external(item.watch)}>
+                Watch →
+              </a>
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
