@@ -12,7 +12,7 @@ npm run build     # static output in dist/
 npm run preview   # serve the built dist/
 ```
 
-Requires Node 18.20+ (22 or 24 LTS recommended).
+Requires Node 22.12+ (24 LTS recommended).
 
 ## Where things live
 
